@@ -11,7 +11,7 @@ import time
 # You will want models to be loaded into memory before starting serverless.
 
 try:
-    pipe = AutoPipelineForText2Image.from_pretrained("SimianLuo/LCM_Dreamshaper_v7", torch_dtype=torch.float16, variant="fp16")
+    pipe = AutoPipelineForText2Image.from_pretrained("SimianLuo/LCM_Dreamshaper_v7")
     pipe.to("cuda")
 except RuntimeError:
     quit()
