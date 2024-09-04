@@ -18,7 +18,7 @@ try:
     pipe = StableDiffusionXLPipeline.from_single_file("https://huggingface.co/nDimensional/NatVis-Natural-Vision-SDXL/blob/main/NaturalVision-epoch68.fp16.safetensors", vae=vae, torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
     pipe.to("cuda")
 
-    refiner = StableDiffusionXLPipeline.from_pretrained("stabilityai/stable-diffusion-xl-refiner-1.0", vae=vae, torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
+    refiner = StableDiffusionXLPipeline.from_single_file("https://huggingface.co/nDimensional/NatVis-Natural-Vision-SDXL/blob/main/NaturalVision-epoch68.fp16.safetensors", vae=vae, torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
     refiner.to("cuda")
 except RuntimeError:
     print('failed to initialize StableDiffusionXLPipeline')
