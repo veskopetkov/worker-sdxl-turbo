@@ -18,8 +18,8 @@ try:
     pipe = StableDiffusionXLPipeline.from_single_file("https://huggingface.co/nDimensional/NatVis-Natural-Vision-SDXL/blob/main/NaturalVision-epoch68.fp16.safetensors", vae=vae, torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
     pipe.to("cuda")
 
-    # refiner = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-refiner-1.0", vae=vae, torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
-    # refiner.to("cuda")
+    refiner = StableDiffusionXLPipeline.from_pretrained("stabilityai/stable-diffusion-xl-refiner-1.0", vae=vae, torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
+    refiner.to("cuda")
 except RuntimeError:
     print('failed to initialize StableDiffusionXLPipeline')
     quit()
@@ -33,15 +33,15 @@ def handler(job):
     width = job_input['width']
     height = job_input['height']
     guidance_scale = job_input['guidance_scale']
-    strength = job_input['strength']
+    negative_prompt = job_input['negative_prompt']
+    # strength = job_input['strength']
     seed = job_input['seed']
     num_images = job_input['num_images']
-    high_noise_frac = 0.7
+    denoising_start = job_input['denoising_start']
 
     time_start = time.time()
-    image = pipe(prompt=prompt, num_inference_steps=num_inference_steps, guidance_scale=guidance_scale, width=width, height=height).images[0]
-    # image = refiner(prompt=prompt, num_inference_steps=refiner_inference_steps, denoising_start=high_noise_frac, image=image).images[0]
-    # image = pipe(prompt=prompt, num_inference_steps=num_inference_steps, guidance_scale=guidance_scale, refiner_inference_steps=refiner_inference_steps, width=width, height=height, strength=strength, seed=seed).images[0]
+    image = pipe(prompt=prompt, num_inference_steps=num_inference_steps, guidance_scale=guidance_scale, width=width, height=height, negative_prompt=negative_prompt).images
+    image = refiner(prompt=prompt, num_inference_steps=refiner_inference_steps, denoising_start=denoising_start, image=image).images[0]
     print(f"Time taken: {time.time() - time_start}")
 
     buffer = io.BytesIO()
