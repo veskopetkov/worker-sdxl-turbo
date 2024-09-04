@@ -39,7 +39,7 @@ def handler(job):
     high_noise_frac = 0.7
 
     time_start = time.time()
-    image = pipe(prompt=prompt, num_inference_steps=num_inference_steps, guidance_scale=guidance_scale, denoising_end=high_noise_frac,  width=width, height=height).images[0]
+    image = pipe(prompt=prompt, num_inference_steps=num_inference_steps, guidance_scale=guidance_scale, width=width, height=height).images[0]
     # image = refiner(prompt=prompt, num_inference_steps=refiner_inference_steps, denoising_start=high_noise_frac, image=image).images[0]
     # image = pipe(prompt=prompt, num_inference_steps=num_inference_steps, guidance_scale=guidance_scale, refiner_inference_steps=refiner_inference_steps, width=width, height=height, strength=strength, seed=seed).images[0]
     print(f"Time taken: {time.time() - time_start}")
