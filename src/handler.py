@@ -15,7 +15,7 @@ try:
     # pipe = AutoPipelineForText2Image.from_pretrained("hugger911/sdxlc_v10.safetensors")
     # pipe.to("cuda")
     vae = AutoencoderKL.from_pretrained("madebyollin/sdxl-vae-fp16-fix", torch_dtype=torch.float16)
-    pipe = StableDiffusionXLPipeline.from_single_file("https://huggingface.co/nDimensional/NatVis-Natural-Vision-SDXL/blob/main/NaturalVision-epoch68.fp16.safetensors", vae=vae)
+    pipe = StableDiffusionXLPipeline.from_single_file("https://huggingface.co/nDimensional/NatVis-Natural-Vision-SDXL/blob/main/NaturalVision-epoch68.fp16.safetensors", vae=vae, torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
     pipe.to("cuda")
 
     # refiner = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-refiner-1.0", vae=vae, torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
