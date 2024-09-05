@@ -34,14 +34,15 @@ def handler(job):
     height = job_input['height']
     guidance_scale = job_input['guidance_scale']
     negative_prompt = job_input['negative_prompt']
-    # strength = job_input['strength']
+    strength = job_input['strength']
     seed = job_input['seed']
     num_images = job_input['num_images']
     denoising_start = job_input['denoising_start']
 
     time_start = time.time()
-    image = pipe(prompt=prompt, num_inference_steps=num_inference_steps, guidance_scale=guidance_scale, width=width, height=height, negative_prompt=negative_prompt).images
-    image = refiner(prompt=prompt, num_inference_steps=refiner_inference_steps, denoising_start=denoising_start, image=image).images[0]
+    low_res_image = pipe(prompt=prompt, num_inference_steps=num_inference_steps, guidance_scale=guidance_scale, width=width/2, height=height/2, negative_prompt=negative_prompt).images
+    image = pipe(prompt=prompt, num_inference_steps=refiner_inference_steps, guidance_scale=guidance_scale, strength=strength, width=width,height=height, negative_prompt=negative_prompt, image=low_res_image).images[0]
+    # image = refiner(prompt=prompt, num_inference_steps=refiner_inference_steps, denoising_start=denoising_start, image=image).images[0]
     print(f"Time taken: {time.time() - time_start}")
 
     buffer = io.BytesIO()
